@@ -1,0 +1,19 @@
+<h2>Groups Detail</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= attachment_image_tag @group, :image, :fill, 40, 40, fallback: "no_image.jpg", size: "40x40" %></td>
+      <td><%= @group.name %></td>
+      <td><%= @group.introduction %></td>
+      <td><%= link_to "Edit", edit_group_path, class: "btn btn-success" %></td>
+    </tr>
+  </tbody>
+</table>

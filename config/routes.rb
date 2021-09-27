@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   end
 
   get 'search', to: 'searches#search'
+
+  resources :groups
 end
