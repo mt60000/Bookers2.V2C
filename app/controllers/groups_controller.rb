@@ -1,6 +1,7 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_correct_owner, only: [:edit, :update, :destroy]
+  before_action :ensure_correct_guest, only: [:join, :leave]
 
   def index
     @groups = Group.all
@@ -46,6 +47,24 @@ class GroupsController < ApplicationController
     end
   end
 
+  def join
+    @group = Group.find(params[:id])
+    if @group.push(user_id: current_user.id)
+      redirect_to groups_url
+    else
+      render :show
+    end
+  end
+
+  def leave
+    @group = Group.find(params[:id])
+    if @group.delete(user_id: current_user.id)
+      redirect_to groups_url
+    else
+      render :show
+    end
+  end
+
 
   private
 
@@ -56,6 +75,13 @@ class GroupsController < ApplicationController
     def ensure_correct_owner
       @group = Group.find(params[:id])
       unless @group.owner_id == current_user.id
+        redirect_to users_url
+      end
+    end
+
+    def ensure_correct_guest
+      @group = Group.find(params[:id])
+      if @group.owner_id == current_user.id
         redirect_to users_url
       end
     end
