@@ -1,4 +1,7 @@
 class GroupsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_correct_owner, only: [:edit, :update, :destroy]
+
   def index
     @groups = Group.all
   end
@@ -27,7 +30,7 @@ class GroupsController < ApplicationController
 
   def update
     @group = Group.find(params[:id])
-    if @group.update
+    if @group.update(group_params)
       redirect_to groups_url
     else
       render :edit
