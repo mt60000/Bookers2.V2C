@@ -4,7 +4,7 @@
     <th></th>
     <th>グループ名</th>
     <th>紹介文</th>
-    <th colspan="3"></th>
+    <th>メンバー数</th>
   </thead>
   <tbody>
     <% @groups.each do |group| %>
@@ -16,11 +16,7 @@
       </td>
       <td><%= link_to group.name, group_path(group) %></td>
       <td><%= group.introduction %></td>
-      <td>
-        <% if group.owner_id == current_user.id %>
-          <%= link_to "Edit", edit_group_path(group), class: "btn btn-success" %>
-        <% end %>
-      </td>
+      <td><%= group.users.count %></td>
     </tr>
     <% end %>
   </tbody>

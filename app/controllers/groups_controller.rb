@@ -18,6 +18,7 @@ class GroupsController < ApplicationController
   def create
     @group = Group.new(group_params)
     @group.owner_id = current_user.id
+    @group.users << current_user
     if @group.save
       redirect_to group_url(@group)
     else
@@ -48,8 +49,9 @@ class GroupsController < ApplicationController
   end
 
   def join
-    @group = Group.find(params[:id])
-    if @group.push(user_id: current_user.id)
+    @group = Group.find(params[:group_id])
+    @group_users = @group.group_users
+    if @group.users << current_user
       redirect_to groups_url
     else
       render :show
@@ -57,8 +59,8 @@ class GroupsController < ApplicationController
   end
 
   def leave
-    @group = Group.find(params[:id])
-    if @group.delete(user_id: current_user.id)
+    @group = Group.find(params[:group_id])
+    if @group.users.delete(current_user)
       redirect_to groups_url
     else
       render :show
@@ -69,18 +71,18 @@ class GroupsController < ApplicationController
   private
 
     def group_params
-      params.require(:group).permit(:name, :introduction, :image)
+      params.require(:group).permit(:name, :introduction, :image, :owner_id)
     end
 
     def ensure_correct_owner
-      @group = Group.find(params[:id])
+      @group = Group.find(params[:group_id])
       unless @group.owner_id == current_user.id
         redirect_to users_url
       end
     end
 
     def ensure_correct_guest
-      @group = Group.find(params[:id])
+      @group = Group.find(params[:group_id])
       if @group.owner_id == current_user.id
         redirect_to users_url
       end

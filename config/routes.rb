@@ -14,7 +14,8 @@ Rails.application.routes.draw do
 
   get 'search', to: 'searches#search'
 
-  resources :groups
-  post "group/join" => "groups#join"
-  post "group/leave" => "groups#leave"
+  resources :groups do
+    get "join" => "groups#join"
+    get "leave" => "groups#leave"
+  end
 end
