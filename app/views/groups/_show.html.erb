@@ -19,17 +19,16 @@
           <%= user.name %><br/>
         <% end %>
       </td>
-      <td>
         <% if @group.owner_id == current_user.id %>
-          <%= link_to "Edit", edit_group_path, class: "btn btn-success" %>
+          <td><%= link_to 'Edit', edit_group_path(@group), class: "btn btn-sm btn-success" %></td>
+          <td><%= link_to 'Notice an Event', group_new_mail_path(@group),class: "btn btn-sm btn-info" %></td>
         <% else %>
           <% if @group.users.exists?(current_user.id) %>
-            <%= link_to "Leave this group", group_leave_path(@group.id, current_user.id), class: "btn btn-danger" %>
+            <td><%= link_to "Leave this group", group_leave_path(@group.id, current_user.id), class: "btn btn-danger" %></td>
           <% else %>
-            <%= link_to "Join this group", group_join_path(@group.id, current_user.id), class: "btn btn-success" %>
+            <td><%= link_to "Join this group", group_join_path(@group.id, current_user.id), class: "btn btn-success" %></td>
           <% end %>
         <% end %>
-      </td>
     </tr>
   </tbody>
 </table>
